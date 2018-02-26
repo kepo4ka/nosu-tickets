@@ -2,7 +2,6 @@ var canvasMask;
 $j = jQuery.noConflict();
 
 
-
 $j(document).ready(function () {
 
     ShowToolTab("#preloader_tab");
@@ -16,10 +15,11 @@ $j(document).ready(function () {
 
     main_drag.width = main_drag.elem.width();
     main_drag.height = main_drag.elem.height();
-    var circle_raduis_min = 7;
-    var circle_raduis_max = 10;
+    var circle_raduis_min = 6;
+    var circle_raduis_max = 9;
     var isdrag = false;
     var iszoomed = false;
+    var shift_down = false;
     var grid_opacity = 0.3;
 
     var svg_chart = d3.select("#seating_charts");
@@ -43,11 +43,9 @@ $j(document).ready(function () {
     var seats = svg_chart.selectAll("circle");
 
 
-
     //  $j("#main_drag_countainer > .handle").css("transform", "scale(0.5) translate(-50%, -50%)");
     // $j("#main_drag_countainer > .handle").css("width", "101%");
     // $j("#main_drag_countainer > .handle").css("height", "101%");
-
 
 
     $j('#plus_zoom_chart').on("click", function (e) {
@@ -134,19 +132,8 @@ $j(document).ready(function () {
     // });
 
 
-
-
-
-
-
     $j("#fixed_seat_info").on("click", function () {
         showSeatInfo(0, 0, "", false);
-    });
-
-
-
-    $j("#addseatButton").on("click", function () {
-
     });
 
 
@@ -184,7 +171,13 @@ $j(document).ready(function () {
 
     $j("#addseatButton").on("click", function (event) {
 
+        var prev_value = $j("#add_seat_type_id").val() || "";
         $j("#add_seat_type_id").empty();
+
+        var next_row_number_in_input = parseInt($j("#add_seat_number").val()) || 0;
+        $j("#add_seat_number").val(next_row_number_in_input + 1);
+
+
         for (i = 0; i < seat_prices.length; i++) {
             var opt = document.createElement("option");
             $j(opt).val(seat_prices[i].id);
@@ -192,6 +185,8 @@ $j(document).ready(function () {
             $j(opt).attr("seat_color", seat_prices[i].color);
             $j("#add_seat_type_id").append(opt);
         }
+
+        $j("#add_seat_type_id").val(prev_value);
 
         ShowToolTab('#add_tab');
 
@@ -235,8 +230,6 @@ $j(document).ready(function () {
     });
 
 
-
-
     $j("#add_seat_row").keyup(function () {
         if (isInt($j("#add_seat_number").val()) && isInt($j(this).val())) {
             $j("#add_seat_save_btn").prop("disabled", false);
@@ -276,6 +269,91 @@ $j(document).ready(function () {
         updCurrentSeat();
     });
 
+
+    $j(document).on("keydown", function (e) {
+        if (e.which == 16) //shift
+        {
+            shift_down = true;
+            return false;
+        }
+        if (e.which == 65 && shift_down) //a
+        {
+            if (seats_selected.length > 0) {
+                deselectAllSelectedSeats(true);
+            }
+            else {
+                selectAllSeats();
+            }
+        }
+    });
+
+    $j(document).on("keyup", function (e) {
+        if (e.which == 16) {
+            shift_down = false;
+        }
+    });
+
+
+    $j("#updateselectedseatsPositionsButton").on("click", function (e) {
+
+        $j("#change_coord_seat_type_id").empty();
+
+        for (i = 0; i < seat_prices.length; i++) {
+            var opt = document.createElement("option");
+            $j(opt).val(seat_prices[i].id);
+            $j(opt).html(seat_prices[i].price);
+            $j(opt).attr("seat_color", seat_prices[i].color);
+            $j("#change_coord_seat_type_id").append(opt);
+        }
+
+        ShowToolTab("#change_coord_tab");
+
+    });
+
+    $j("#change_coord_seat_btn").on("click", function (e) {
+        changeSelectedSeatsInfo();
+    });
+
+    function changeSelectedSeatsInfo() {
+
+
+        var newPriceTypeId = parseInt($j("#change_coord_seat_type_id").val());
+
+        var offsetX = parseInt($j("#change_coord_seat_x").val());
+        var offsetY = parseInt($j("#change_coord_seat_y").val());
+
+
+        for (i = 0; i < seats_selected.length; i++) {
+            var tempseat = seats_selected[i];
+            var id = parseInt(tempseat.attr("seat_id"));
+            var cx = parseInt(tempseat.attr("cx"));
+            var cy = parseInt(tempseat.attr("cy"));
+            var resultX = RoundWithBazisNumber(cx + offsetX * circle_raduis_min, circle_raduis_min);
+            var resultY = RoundWithBazisNumber(cy + offsetY * circle_raduis_min, circle_raduis_min);
+
+
+            tempseat.attr("cx", resultX);
+            tempseat.attr("cy", resultY);
+
+            if (newPriceTypeId !== false) {
+
+                seat_prices.forEach(function (value) {
+                    if (value.id == newPriceTypeId) {
+                        console.log(true);
+                        tempseat.attr("seat_type_id", value.id)
+                            .attr("seat_color", value.color)
+                            .style("stroke", value.color)
+                            .attr("seat_price", value.price);
+                        return false;
+                    }
+                });
+            }
+        }
+
+        // deselectAllSelectedSeats();
+
+        hideToolTabs();
+    }
 
 
     function updCurrentSeat() {
@@ -322,7 +400,7 @@ $j(document).ready(function () {
                 seat: seat
             },
             success: function (json) {
-                console.log(json);
+                //   console.log(json);
 
                 var data = JSON.parse(json);
 
@@ -346,14 +424,12 @@ $j(document).ready(function () {
                 showMessage("Не удалось обновить информацию о текущем месте (" + seat.seat_id + ") в базу: " + res, true);
             },
             complete: function () {
-                HideToolTabs();
+                hideToolTabs();
             }
         });
 
 
     }
-
-
 
 
     function createNewSeat() {
@@ -364,8 +440,15 @@ $j(document).ready(function () {
         seatNew.seat_type_id = parseInt($j('#add_seat_type_id').val());
 
         //  seatNew.seat_isbooked = $j("#add_seat_booked").is(':checked');
-        seatNew.seat_left = circle_raduis_min * 2;
-        seatNew.seat_top = circle_raduis_min * 2;
+        if (seat_one_selected) {
+            seatNew.seat_left = parseInt(seat_one_selected.attr('cx')) + circle_raduis_min * 3;
+            seatNew.seat_top = seat_one_selected.attr('cy');
+            seat_one_selected = null;
+        }
+        else {
+            seatNew.seat_left = circle_raduis_min * 2;
+            seatNew.seat_top = circle_raduis_min * 2;
+        }
         seatNew.seat_isselected = false;
 
         $j("#add_seat_type_id option").each(function () {
@@ -389,10 +472,8 @@ $j(document).ready(function () {
 
     function isInt(value) {
         return !isNaN(value) &&
-            parseInt(Number(value)) == value &&
-            !isNaN(parseInt(value, 10)) && parseInt(value, 10) >= 0;
+            parseInt(Number(value)) == value && !isNaN(parseInt(value, 10)) && parseInt(value, 10) >= 0;
     }
-
 
 
     function seatmouseEnterHandler(seat, event) {
@@ -403,22 +484,30 @@ $j(document).ready(function () {
         var e = event;
         var seatCoor = getCoords(seat._groups[0][0]);
 
+        var html = "";
         if (seat.attr("seat_type_id") == price_booked_type_id) {
-            html = "Место недоступно";
-            seat.style("cursor", "default");
-        } else {
-            html = "<p>" + seat.attr("seat_price") + "₽" + "</p>" +
-                "<p>Ряд - " + seat.attr("seat_row") + ", Место - " + seat.attr("seat_number") + "</p>" +
-                "<p>ID - " + seat.attr("seat_id") + "; Координаты - (" + seat.attr("cx") + "," + seat.attr("cy") + ") </p>";
-
-            seat.style("cursor", "pointer");
+            html = "<p>Место недоступно</p>";
         }
+        else
+        {
+            html = "<p>" + seat.attr("seat_price") + "₽" + "</p>";
+        }
+        
+        html += "<p>Ряд - " + seat.attr("seat_row") + ", Место - " + seat.attr("seat_number") + "</p>" +
+            "<p>ID - " + seat.attr("seat_id") + "; Координаты - (" + seat.attr("cx") + "," + seat.attr("cy") + ") </p>";
+
+        seat.style("cursor", "pointer");
+
 
         showSeatInfo(seatCoor.left + seatCoor.width * 0.5, seatCoor.top - seatCoor.height * 0.5, html, true);
     }
 
 
     function seatmouseDownHandler(thisSeat, eventt) {
+
+        if (shift_down) {
+            return;
+        }
 
         var eventdown = eventt;
         var seatRadius = parseInt(thisSeat.attr("r"));
@@ -488,69 +577,129 @@ $j(document).ready(function () {
     }
 
 
+    function deselectAllSelectedSeats(k) {
+        if (k) {
+            for (i = 0; i < seats_selected.length; i++) {
+                var tempseat = seats_selected[i];
+                tempseat = seatStyleDeselected(tempseat);
+            }
+        }
+        else {
+            var allSeats = svg_chart.selectAll("circle");
 
-    function seatmouseClickHandler(seat) {
-        if (seat.attr("seat_isselected") == "false") {
-            var allseats = svg_chart.selectAll("circle");
-            allseats.each(function (d, i) {
+            allSeats.each(function () {
                 var tempseat = d3.select(this);
                 tempseat = seatStyleDeselected(tempseat);
-            });
-            seat = seatStyleSelected(seat);
-            seat_one_selected = seat;
-            $j("#deleteseatButton").prop("disabled", false);
-            $j("#updateseatButton").prop("disabled", false);
-
-        } else {
-            seat = seatStyleDeselected(seat);
-            var seat_remove_id = parseInt(seat.attr("seat_id"));
-            seat_one_selected = null;
-            $j("#deleteseatButton").prop("disabled", true);
-            $j("#updateseatButton").prop("disabled", true);
+            })
         }
+        seats_selected.length = 0;
+        $j("#updateselectedseatsPositionsButton").prop("disabled", true);
     }
-    // svg_chart.selectAll("line").on("mouseenter", function(e)
-    // {
-    //     console.log(d3.select(this).attr("x1"));
-    // });
+
+    function selectAllSeats() {
+
+        var allSeats = svg_chart.selectAll("circle");
+
+        allSeats.each(function () {
+            var tempseat = d3.select(this);
+            tempseat = seatStyleSelected(tempseat);
+            seats_selected.push(tempseat);
+        });
+
+        $j("#updateselectedseatsPositionsButton").prop("disabled", false);
+    }
 
 
-    // $j("#seat_order_list").on("click", ".seat_order_remove_btn", function()
-    // {
-    //     var thisRemoveId = parseInt($j(this).attr("seat_removeid"));
+    function seatmouseClickHandler(seat) {
+        if (shift_down) {
+            if (seat.attr("seat_isselected") == "false") {
+                seats_selected.push(seat);
+                seat = seatStyleSelected(seat);
+            }
+            else {
 
-    //     $j(this).parent().parent().remove();
+                for (i = 0; i < seats_selected.length; i++) {
+                    if (seat.attr("seat_id") == seats_selected[i].attr("seat_id")) {
+                        seats_selected.splice(i, 1);
+                        break;
+                    }
+                }
 
-    //     var seats = svg_chart.selectAll("circle");
-    //     var seat_change_style;
-    //     seats.each(function(d, i)
-    //     {
-    //         var thisCir = d3.select(this);
-    //         var cir_id = parseInt(thisCir.attr("seat_id"));
+                seat = seatStyleDeselected(seat);
+            }
+            if (seats_selected.length > 0) {
+                $j("#updateselectedseatsPositionsButton").prop("disabled", false);
+            }
+            else {
+                $j("#updateselectedseatsPositionsButton").prop("disabled", true);
+            }
+        }
 
-    //         if (thisRemoveId === cir_id)
-    //         {
-    //             seat_change_style = thisCir;
-    //             return false;
-    //         }
-    //     });
+        else {
 
-    //     seat_change_style = seatStyleDeselected(seat_change_style);
+            if (seat.attr("seat_isselected") == "false") {
+                deselectAllSelectedSeats(false);
 
-    //     removefromOrder(thisRemoveId);
-    //     logOrder();
-    // });
+                seat = seatStyleSelected(seat);
+                seat_one_selected = seat;
+                $j("#deleteseatButton").prop("disabled", false);
+                $j("#updateseatButton").prop("disabled", false);
+
+            } else {
+                deselectAllSelectedSeats(true);
+
+                seat = seatStyleDeselected(seat);
+                var seat_remove_id = parseInt(seat.attr("seat_id"));
+                seat_one_selected = null;
+                $j("#deleteseatButton").prop("disabled", true);
+                $j("#updateseatButton").prop("disabled", true);
+            }
+        }
+
+    }
+
+// svg_chart.selectAll("line").on("mouseenter", function(e)
+// {
+//     console.log(d3.select(this).attr("x1"));
+// });
+
+
+// $j("#seat_order_list").on("click", ".seat_order_remove_btn", function()
+// {
+//     var thisRemoveId = parseInt($j(this).attr("seat_removeid"));
+
+//     $j(this).parent().parent().remove();
+
+//     var seats = svg_chart.selectAll("circle");
+//     var seat_change_style;
+//     seats.each(function(d, i)
+//     {
+//         var thisCir = d3.select(this);
+//         var cir_id = parseInt(thisCir.attr("seat_id"));
+
+//         if (thisRemoveId === cir_id)
+//         {
+//             seat_change_style = thisCir;
+//             return false;
+//         }
+//     });
+
+//     seat_change_style = seatStyleDeselected(seat_change_style);
+
+//     removefromOrder(thisRemoveId);
+//     logOrder();
+// });
 
 
     function showSeatInfo(left, top, html, k) {
         if (k) {
             $j("#fixed_seat_info").addClass("display_block");
         } else {
-            $j("#fixed_seat_info").removeClass("display_block");
+            //  $j("#fixed_seat_info").removeClass("display_block");
         }
 
-        $j("#fixed_seat_info").css("left", left);
-        $j("#fixed_seat_info").css("top", top);
+        $j("#fixed_seat_info").css("left", left - pageXOffset);
+        $j("#fixed_seat_info").css("top", top - pageYOffset);
         $j("#fixed_seat_info").html(html);
     }
 
@@ -574,91 +723,6 @@ $j(document).ready(function () {
         return seat;
     }
 
-
-
-
-    // function addtoOrder(seat)
-    // {
-    //     var temp_seat_info = {
-    //         seat_price: parseInt(seat.attr("seat_price")),
-    //         seat_id: parseInt(seat.attr("seat_id")),
-    //         seat_row: parseInt(seat.attr("seat_row")),
-    //         seat_number: parseInt(seat.attr("seat_number"))
-    //     }
-
-    //     seats_order.push(temp_seat_info);
-
-    //     orderSummaryChange(temp_seat_info.seat_price);
-
-
-    //     var order_li_item = document.createElement("li");
-    //     order_li_item.setAttribute("seat_id", temp_seat_info.seat_id);
-    //     order_li_item_html = '<div class="seat_order_item">' +
-    //         '<span class="fa-stack fa-lg seat_order_remove_btn" seat_removeid="' +
-    //         temp_seat_info.seat_id +
-    //         '">' +
-    //         '<i class="fa fa-circle fa-stack-2x" ></i>' +
-    //         '<i class="fa fa-times fa-stack-1x fa-inverse" ></i>' +
-    //         '</span>' +
-    //         '<div class="one_ticket_order_info">' +
-    //         '<div class="position">' +
-    //         '<p>Ряд ' + temp_seat_info.seat_row + '</p>' +
-    //         '<p>Место ' + temp_seat_info.seat_number + '</p>' +
-    //         '</div>' +
-    //         '<div class="price">' +
-    //         temp_seat_info.seat_price + " ₽" +
-    //         '</div></div></div>';
-
-    //     order_li_item.innerHTML = order_li_item_html;
-    //     $j("#seat_order_list").append(order_li_item);
-    // }
-
-
-    // function removefromOrder(id)
-    // {
-    //     for (i = 0; i < seats_order.length; i++)
-    //     {
-    //         var thisId = parseInt(seats_order[i].seat_id);
-    //         if (id === thisId)
-    //         {
-    //             orderSummaryChange(-seats_order[i].seat_price);
-    //             seats_order.splice(i, 1);
-    //             break;
-    //         }
-    //     }
-
-    //     $j("#seat_order_list li").each(function()
-    //     {
-    //         var thisId = parseInt($j(this).attr("seat_id"));
-    //         if (id === thisId)
-    //         {
-    //             $j(this).remove();
-    //             return false;
-    //         }
-    //     });
-    // }
-
-
-    // function orderSummaryChange(price)
-    // {
-    //     summary_order_elem = $j("#order_summary_price");
-    //     summary_order_price = parseInt(summary_order_elem.html());
-    //     if (isNaN(summary_order_price) == false)
-    //     {
-    //         summary_order_price += price;
-    //     }
-    //     else {
-    //         summary_order_price = price;
-    //     }
-    //     summary_order_elem.html(summary_order_price);
-    //     if (summary_order_price > 0)
-    //     {
-    //         $j("#order_continue_btn").prop("disabled", "");
-    //     }
-    //     else {
-    //         $j("#order_continue_btn").prop("disabled", "disabled");
-    //     }
-    // }
 
     function enableDrag() {
         canvasMask = new Dragdealer('main_drag_countainer', {
@@ -685,10 +749,6 @@ $j(document).ready(function () {
     }
 
 
-    // function seatScale(elem) {
-    //     elem.toggleClass("seat_scaled");
-    // }
-
     function RoundWithBazisNumber(number, bazis) {
         if (number % bazis < bazis / 2) {
             number = number - number % bazis;
@@ -697,7 +757,6 @@ $j(document).ready(function () {
         }
         return number;
     }
-
 
 
     function addSeatsInfo(data) {
@@ -723,9 +782,8 @@ $j(document).ready(function () {
             createSeatfromObj(seats_array[i]);
         }
 
-        HideToolTabs();
+        hideToolTabs();
     }
-
 
 
     function createSeatfromObj(obj) {
@@ -758,18 +816,23 @@ $j(document).ready(function () {
 
 
     function showMessage(message, iserror) {
-        $j("#errors_container").css("display", "inline-block");
+        //  $j("#errors_container").css("display", "inline-block");
+        var error_cont = $j("#errors_container");
+
         if (iserror) {
-            $j("#errors_container").css("background-color", "tomato");
+            error_cont.css("background-color", "tomato");
         } else {
-            $j("#errors_container").css("background-color", "cornflowerblue");
+            error_cont.css("background-color", "cornflowerblue");
         }
-        $j("#errors_container").html(message);
+        error_cont.html(message);
+        error_cont.css("opacity", 1);
+
+
         setTimeout(function () {
-            $j("#errors_container").fadeToggle("slow", function () {
-                $j("#errors_container").css("color", "");
-                $j("#errors_container").text("");
-            });
+            error_cont.css("opacity", 0);
+            error_cont.css("color", "");
+            error_cont.text("");
+
         }, 3000);
     }
 
@@ -839,7 +902,7 @@ $j(document).ready(function () {
                 showMessage("Не удалось добавить информацию о новом месте в базу: " + res, true);
             },
             complete: function () {
-                HideToolTabs();
+                hideToolTabs();
             }
         });
     }
@@ -874,17 +937,15 @@ $j(document).ready(function () {
                 showMessage("Не удалось удалить информацию об удаляемом месте в базе: " + res, true);
             },
             complete: function () {
-                HideToolTabs();
+                hideToolTabs();
             }
         });
     }
 
 
-
-
     function updateAllSeatsPositionAjax(seats_array) {
         ShowToolTab("#preloader_tab");
-
+        console.log(seats_array[0]);
         $j.ajax({
             type: "POST",
             url: ajaxurl,
@@ -901,7 +962,7 @@ $j(document).ready(function () {
                 showMessage("Не удалось удалить сохранить новые координаты мест в базе: " + res, true);
             },
             complete: function () {
-                HideToolTabs();
+                hideToolTabs();
             }
         });
     }
@@ -926,16 +987,15 @@ $j(document).ready(function () {
             }
         }
 
-        (goodmessage != "") ? goodmessage = startmsg + goodmessage + "</span> были обновлены <br>": goodmessage;
-        (badmessage != "") ? badmessage = startmsg + badmessage + "</span> не были обновлены изза непредвиденной ошибки <br>": badmessage;
-        (normalmessage != "") ? normalmessage = startmsg + normalmessage + "</span> не нуждались в обновлении<br>": normalmessage;
+        (goodmessage != "") ? goodmessage = startmsg + goodmessage + "</span> были обновлены <br>" : goodmessage;
+        (badmessage != "") ? badmessage = startmsg + badmessage + "</span> не были обновлены изза непредвиденной ошибки <br>" : badmessage;
+        (normalmessage != "") ? normalmessage = startmsg + normalmessage + "</span> не нуждались в обновлении<br>" : normalmessage;
 
         var message = "Всего мест - " + data.length + " <br>";
         message += goodmessage + badmessage + normalmessage;
 
         showMessage(message, false);
     }
-
 
 
     function getPricesAjax() {
@@ -1010,7 +1070,7 @@ $j(document).ready(function () {
         $j(tabId).css("display", "block");
     }
 
-    function HideToolTabs() {
+    function hideToolTabs() {
         $j('.tool_menu_tabs').css('display', "none");
         $j('.tool_menu_tabs .tool_tab').css("display", "none");
     }
@@ -1032,7 +1092,7 @@ $j(document).ready(function () {
         var ch = parseInt(svg_chart.attr("height"));
         var cwCount = cw / circle_raduis_min;
         var chCount = ch / circle_raduis_min;
-        console.log(cwCount, chCount);
+        //  console.log(cwCount, chCount);
 
         for (i = 0; i < cwCount; i++) {
             svg_chart.append("line")
@@ -1052,6 +1112,32 @@ $j(document).ready(function () {
                 .attr("y1", i * circle_raduis_min)
                 .attr("y2", i * circle_raduis_min);
         }
+
+        start_x = svgCoor.width * 0.1;
+        start_y = end_y = svgCoor.height - svgCoor.height * 0.05;
+        x1 = x2 = svgCoor.width * 0.5;
+        x1 = svgCoor.width * 0.4;
+        x2 = svgCoor.width * 0.6;
+        y1 = y2 = start_y * 0.9;
+        end_x = svgCoor.width * 0.9;
+
+        var path_value = "M " + start_x + ", " + start_y + " C " + x1 + ", " + y1 + " " + x2 + ", " + y2 + " " + end_x + ", " + end_y;
+
+
+        svg_chart.append("path")
+            .attr("d", path_value)
+            .attr("stroke", "gray")
+            .attr("stroke-width", 3)
+            .attr("fill", "none");
+
+        var text_elem = svg_chart.append("text")
+            .attr("x", svgCoor.width / 2)
+            .attr("y", svgCoor.height * 0.95)
+            .text("СЦЕНА")
+            .attr("fill", "gray")
+            .attr("font-size", "35px");
+        text_elem.attr("x", parseInt(text_elem.attr("x")) - getCoords(text_elem._groups[0][0]).width / 2);
+
     }
 
     function random(min, max) {
@@ -1061,7 +1147,5 @@ $j(document).ready(function () {
     }
 
 
-
-
-
-});
+})
+;

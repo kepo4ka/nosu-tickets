@@ -232,12 +232,14 @@ function UpdateSeatsPosition()
     for ($i = 0; $i < count($data); $i++) {
         $data[$i]['seat_left'] = intval($data[$i]['seat_left']);
         $data[$i]['seat_top'] = intval($data[$i]['seat_top']);
+        $data[$i]['seat_type_id'] = intval($data[$i]['seat_type_id']);
 
         $res = $wpdb->update($table,
             array("left" => $data[$i]['seat_left'],
-                "top" => $data[$i]['seat_top']),
+                "top" => $data[$i]['seat_top'],
+                "type_id" => $data[$i]['seat_type_id']),
             array("id" => $data[$i]['seat_id']),
-            array('%d', '%d'),
+            array('%d', '%d', '%d'),
             array('%d')
         );
 

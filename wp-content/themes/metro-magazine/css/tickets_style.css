@@ -15,7 +15,7 @@
 }
 
 #main_drag_countainer {
-    width: 1000px;
+    width: 1200px;
     height: 600px;
     margin: 0 auto;
     overflow: hidden;
@@ -342,7 +342,8 @@ svg circle {
     padding: 10px;
     border-radius: 5px;
     font-weight: bold;
-    display: none;
+    /*display: none;*/
+    opacity: 0;
     width: 100%;
     text-align: center;
 }
