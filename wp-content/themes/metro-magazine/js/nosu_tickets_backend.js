@@ -16,7 +16,7 @@ $j(document).ready(function () {
 
     main_drag.width = main_drag.elem.width();
     main_drag.height = main_drag.elem.height();
-    var circle_raduis_min = 8;
+    var circle_raduis_min = 7;
     var circle_raduis_max = 10;
     var isdrag = false;
     var iszoomed = false;
@@ -558,7 +558,7 @@ $j(document).ready(function () {
     function seatStyleSelected(seat) {
         seat
             .style("stroke", seat.attr("seat_color"))
-            .style("stroke-width", 10)
+            .style("stroke-width", circle_raduis_min)
             .style("fill", "white");
         seat.attr("seat_isselected", true);
         return seat;
