@@ -1,0 +1,339 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    margin: 0 auto;
+    text-align: center;
+}
+
+section {
+    position: relative;
+    width: 80%;
+    border: 3px solid red;
+    border-image: linear-gradient(to right, tomato, gold, yellowgreen, olivedrab, skyblue, rebeccapurple) 1;
+    margin: 0 auto;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.content {
+    position: relative;
+    margin: 20px auto 5px auto;
+    width: 700px;
+    border: 1px solid black;
+    /* text-align: center; */
+}
+
+.content:hover {
+    cursor: default;
+}
+
+.seating_charts_container {
+    position: relative;
+}
+
+.handle {
+    /*width: 700px;*/
+    /*height: 400px;*/
+    display: grid;
+    grid-gap: 0px;
+    /* display: grid;
+    grid-gap: 5px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 50px 350px 50px;
+    grid-template-areas: "s12 s12 s12 s12 s12 s12 s12 s12 s12 u s12 s12" "m m c c c c c c c c c c" "f f f f f f f f f f f f"; */
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    grid-template-areas: "s1 s1 s1 s1 s1 s1 s1 s1 u u u u u s2 s2 s2 s2 s2 s2 s2" "u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8";
+}
+
+.seating_charts>div {
+    /* border: 1px solid gray; */
+    text-align: center;
+}
+
+.seating_charts:hover {
+    /* border: 1px solid gray; */
+    text-align: center;
+    cursor: default;
+}
+
+.seat:hover {
+    /* border: 1px solid gray; */
+    text-align: center;
+    cursor: pointer;
+}
+
+.seat_info_module {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    background: gray;
+    margin-left: -600%;
+    margin-top: -750%;
+    z-index: 3;
+}
+
+.seat_info_module::after {
+    content: '';
+    position: absolute;
+    /* Абсолютное позиционирование */
+    left: 50%;
+    transform: translateX(-40%);
+    bottom: -20px;
+    /* Положение треугольника */
+    border: 10px solid transparent;
+    /* Прозрачные границы */
+    border-top: 10px solid gray;
+    /* Добавляем треугольник */
+}
+
+.seat_group1 {
+    grid-area: s1;
+}
+
+.seat_group2 {
+    grid-area: s2;
+}
+
+.seat_group3 {
+    grid-area: s3;
+}
+
+.seat_group4 {
+    grid-area: s4;
+}
+
+.seat_group5 {
+    grid-area: s5;
+}
+
+.seat_group6 {
+    grid-area: s6;
+}
+
+.seat_group7 {
+    grid-area: s7;
+}
+
+.seat_group8 {
+    grid-area: s8;
+}
+
+.seat_row {
+    background: rgba(58, 23, 23, 0.534);
+    border: 1px solid black;
+}
+
+.blue {
+    background: blue;
+}
+
+.gray {
+    background: gray;
+}
+
+.red {
+    background: red;
+}
+
+.orange {
+    background: orange;
+}
+
+.seat {
+    border: 1px solid black;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 2px;
+    width: 10px;
+    height: 10px;
+    margin: 0px;
+    display: inline-block;
+    transition: transform 0.5s;
+}
+
+.scene {
+    position: relative;
+    margin: 0 auto;
+    width: 700px;
+    height: 50px;
+    border: double 3px black;
+}
+
+.scene>div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-weight: bold;
+    font-size: 25px;
+    transform: translate(-50%, -50%);
+}
+
+.zoom_button_container {
+    position: absolute;
+    right: 20px;
+    z-index: 2;
+}
+
+.zoom_btn {
+    border-radius: 202px;
+    font-size: 70px;
+    text-align: center;
+    border: 1px solid black;
+    line-height: 0.5;
+    margin: 10px;
+    background: gray;
+    transition: 0.2s all;
+}
+
+.zoom_btn:hover {
+    cursor: pointer;
+    border: 1px solid gray;
+}
+
+#seating_charts_mask {
+    /*position: absolute;*/
+    /*left: 50%;*/
+    /*top: 10%;*/
+    /*-webkit-transform: translate(-50%, -50%);*/
+    /*transform: translate(-50%, -50%);*/
+    position: relative;
+    background: cornflowerblue;
+    height: 400px;
+    width: 700px;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+#seating_charts_mask .handle {
+    padding: 5px;
+    width: 99%;
+    height: 95%;
+    border-radius: 0;
+    background: cornflowerblue;
+}
+
+.seat_scaled {
+    transform: scale(1.5);
+}
+
+.seating_charts_scaled {
+    width: 201% !important;
+    height: 201% !important;
+}
+
+.seating_charts_scaled .seat {
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+}
+
+.seating_charts_scaled .seat_info_module {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    background: gray;
+    margin-left: -240%;
+    margin-top: -325%;
+    z-index: 3;
+}
+
+.liked_seat_info {
+    border-radius: 20px;
+    padding: 5px;
+}
+
+.liked_seat_container {
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    height: 7%;
+    margin-top: 10px;
+}
+
+#liked_seats_list li {
+    border: 1px solid black;
+}
+
+
+/*#seating_charts_mask .handle .page {*/
+
+
+/*float: left;*/
+
+
+/*position: relative;*/
+
+
+/*width: 40%;*/
+
+
+/*height: 40%;*/
+
+
+/*border: 2px solid black;*/
+
+
+/*}*/
+
+.seat:before {
+    content: "Номер места: " attr(data_id) "\aНомер места: " attr(data_id);
+    box-sizing: border-box;
+    display: none;
+    padding: 5px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    border-radius: 5px;
+    white-space: pre;
+    background: black;
+    color: white;
+    z-index: 999;
+}
+
+.seat:after {
+    content: '';
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 0;
+    width: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid black;
+}
+
+.seat:hover {
+    background: purple;
+}
+
+.seat:hover:before {
+    display: block;
+}
+
+.seat:hover:after {
+    display: block;
+}
+
+.seat_scaled {
+    transform: scale(1.6);
+}
+
+.seat_scaled:after {
+    transform: translate(-50%, -50%) scale(0.625);
+}
+
+.seat_scaled:before {
+    transform: translate(-50%, -85%) scale(0.625);
+}

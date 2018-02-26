@@ -1,0 +1,46 @@
+#wow-modal-window-1{
+	width:1200px; 
+	height: auto;
+	margin-bottom:40px;		
+}
+#wow-modal-close-1 {
+	position: absolute; 
+	top: -15px; 
+	right: -15px;	 
+	font-size: 14px; 	
+	font-weight: bold; 
+	cursor:pointer; 
+	display: none; 
+} 
+
+#close-circle-1{
+	color: #000000;
+}
+#close-times-1{
+	color: #ffffff;
+}
+.wow-modal-botton-1 {
+	text-decoration: none;
+	color: white;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-o-border-radius: 4px;
+  -ms-border-radius: 4px;
+	border-radius: 4px;
+	padding: 14px 14px 12px;
+	line-height: 14px;
+	float: none;
+	text-shadow: none;
+	cursor:pointer;
+	z-index: 9999;
+	background: #383838; 
+}
+.wow-modal-botton-1:hover {	
+	background: #797979; 
+}
+
+@media only screen and (max-width: 1024px){
+#wow-modal-window-1 {
+    width:85%;
+}
+}

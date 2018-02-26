@@ -1,0 +1,81 @@
+#main_drag_countainer {
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#main_drag_countainer>.handle {
+    width: 3300px;
+    height: 3300px;
+    padding: 150px;
+    box-sizing: border-box;
+    background: url('https://24smi.org/public/media/2017/5/31/delevingne_9.jpg') no-repeat;
+    background-size: 100% 100%;
+}
+
+.mmain {
+    position: relative;
+    padding: 50px;
+    background: gray;
+}
+
+
+
+.zoom_btn {
+    left: 0px;
+    top: 0px;
+    width: 100px;
+    height: 50px;
+    position: absolute;
+}
+
+.zoom_btn .fa:hover {
+    opacity: 0.7;
+}
+
+.seat {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 20px;
+    height: 20px;
+    background: blue;
+}
+
+.seat_scaled {
+    transform: scale(25);
+    background: purple;
+}
+
+#seating_charts_container {
+    /* display: grid;
+    grid-gap: 0px;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    grid-template-areas: "s1 s1 s1 s1 s1 s1 s1 s1 u u u u u s2 s2 s2 s2 s2 s2 s2" "u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2 u2" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "s3 s3 s3 s3 s3 u3 s4 s4 s4 s4 s4 s4 s4 s4 u4 s5 s5 s5 s5 s5" "u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5 u5" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8" "s6 s6 s6 s6 s6 s6 u6 s7 s7 s7 s7 s7 s7 u7 s8 s8 s8 s8 s8 s8"; */
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* border: 3px solid black; */
+}
+
+#seating_charts_container>div {
+    border: 1px solid black;
+}
+
+
+.zoomed {
+    width: 200% !important;
+    height: 200% !important;
+}
+
+#plus_zoom_chart {
+    position: absolute;
+}
+
+#minus_zoom_chart {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+}
