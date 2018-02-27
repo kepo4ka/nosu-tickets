@@ -171,12 +171,14 @@ $j(document).ready(function () {
 
     $j("#addseatButton").on("click", function (event) {
 
-        var prev_value = $j("#add_seat_type_id").val() || "";
+
+
+        var prev_value = $j("#add_seat_type_id").val();
+
         $j("#add_seat_type_id").empty();
 
         var next_row_number_in_input = parseInt($j("#add_seat_number").val()) || 0;
         $j("#add_seat_number").val(next_row_number_in_input + 1);
-
 
         for (i = 0; i < seat_prices.length; i++) {
             var opt = document.createElement("option");
@@ -184,6 +186,11 @@ $j(document).ready(function () {
             $j(opt).html(seat_prices[i].price);
             $j(opt).attr("seat_color", seat_prices[i].color);
             $j("#add_seat_type_id").append(opt);
+        }
+
+        if (!prev_value)
+        {
+            prev_value= $j("#add_seat_type_id option").first().val();
         }
 
         $j("#add_seat_type_id").val(prev_value);
@@ -226,6 +233,8 @@ $j(document).ready(function () {
             var d3elem = d3.select(this);
             seatsJSArray.push(d3Seat_to_jsSeat(d3elem));
         });
+
+        console.log("seatlen", seatsJSArray.length);
         updateAllSeatsPositionAjax(seatsJSArray);
     });
 
@@ -339,7 +348,6 @@ $j(document).ready(function () {
 
                 seat_prices.forEach(function (value) {
                     if (value.id == newPriceTypeId) {
-                        console.log(true);
                         tempseat.attr("seat_type_id", value.id)
                             .attr("seat_color", value.color)
                             .style("stroke", value.color)
@@ -612,6 +620,13 @@ $j(document).ready(function () {
 
     function seatmouseClickHandler(seat) {
         if (shift_down) {
+
+            if (seat_one_selected)
+            {
+                seat_one_selected = seatStyleDeselected(seat_one_selected);
+                seat_one_selected = null;
+            }
+
             if (seat.attr("seat_isselected") == "false") {
                 seats_selected.push(seat);
                 seat = seatStyleSelected(seat);
@@ -945,18 +960,19 @@ $j(document).ready(function () {
 
     function updateAllSeatsPositionAjax(seats_array) {
         ShowToolTab("#preloader_tab");
-        console.log(seats_array[0]);
+        var seats_json = JSON.stringify(seats_array);
         $j.ajax({
             type: "POST",
             url: ajaxurl,
             data: {
                 action: 'updateSeatsPosition',
-                seats_array: seats_array
+                seats_array: seats_json
             },
             success: function (json) {
                 var data = JSON.parse(json);
-                // console.log(json);
-                updateAllSeatsShowResult(data);
+                  console.log(json);
+
+               updateAllSeatsShowResult(data);
             },
             error: function (res) {
                 showMessage("Не удалось удалить сохранить новые координаты мест в базе: " + res, true);

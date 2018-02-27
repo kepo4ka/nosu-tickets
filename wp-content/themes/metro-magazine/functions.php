@@ -229,16 +229,21 @@ function UpdateSeatsPosition()
     $results = array();
     $result = array();
 
+    $dataJson = str_replace("\\", "", $data);
+    $dataJson = json_decode($dataJson);
+    $data = $dataJson;
+   // var_dump(json_decode($dataJson));
+   // var_dump($data[232]-> seat_id);
     for ($i = 0; $i < count($data); $i++) {
-        $data[$i]['seat_left'] = intval($data[$i]['seat_left']);
-        $data[$i]['seat_top'] = intval($data[$i]['seat_top']);
-        $data[$i]['seat_type_id'] = intval($data[$i]['seat_type_id']);
+        $data[$i]->seat_left = intval($data[$i]->seat_left);
+        $data[$i]->seat_top = intval($data[$i]->seat_top);
+        $data[$i]->seat_type_id = intval($data[$i]->seat_type_id);
 
         $res = $wpdb->update($table,
-            array("left" => $data[$i]['seat_left'],
-                "top" => $data[$i]['seat_top'],
-                "type_id" => $data[$i]['seat_type_id']),
-            array("id" => $data[$i]['seat_id']),
+            array("left" => $data[$i]->seat_left,
+                "top" => $data[$i]->seat_top,
+                "type_id" => $data[$i]->seat_type_id),
+            array("id" => $data[$i]->seat_id),
             array('%d', '%d', '%d'),
             array('%d')
         );
@@ -249,7 +254,7 @@ function UpdateSeatsPosition()
             $result['res'] = $res;
         }
 
-        $result['id'] = $data[$i]['seat_id'];
+        $result['id'] = $data[$i]->seat_id;
         $results[] = $result;
     }
 
