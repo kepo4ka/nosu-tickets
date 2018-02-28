@@ -1,0 +1,126 @@
+<link rel="stylesheet" id="tickets_style-css" href="http://u36179.s02.wh1.su/wp-content/themes/metro-magazine/css/tickets_style.css?ver=080218"
+    type="text/css" media="all">
+<script type="text/javascript" src="http://u36179.s02.wh1.su/wp-content/themes/metro-magazine/js/dragdealer.js?ver=4.9.4"></script>
+<script type="text/javascript" src="http://u36179.s02.wh1.su/wp-content/themes/metro-magazine/js/nosu_tickets_backend.js?ver=4.9.4"></script>
+<script src="https://d3js.org/d3.v5.js"></script>
+<div class="tool_menu_tabs">
+    <div class="tool_tab wrap" id="add_tab">
+        <p>
+            Номер ряда
+            <input type="number" min="0" name="add_seat_row" id="add_seat_row">
+        </p>
+        <p>
+            Номер места
+            <input type="number" min="0" name="add_seat_number" id="add_seat_number">
+        </p>
+
+        <p>
+            Ценовая категория
+            <select name="add_seat_type_id" id="add_seat_type_id">
+                <!-- <option value="1" selected>Тест 1</option>
+                        <option value="2">Тест 2</option>                     -->
+            </select>
+        </p>
+        <p>
+            <!-- <input type="checkbox" name="add_seat_booked" id="add_seat_booked"><label for="add_seat_booked">Место недоступно</label></p> -->
+            <p>
+                <button class="button" id="add_seat_save_btn" disabled>Cохранить</button>
+            </p>
+
+    </div>
+    <!-- <div class="tool_tab" id="del_tab">
+     
+        <p> <button class="button" id="delete_seat_btn" disabled>Удалить</button>
+
+    </div> -->
+
+
+ <div class="tool_tab" id="change_coord_tab">
+       <p> Смещение по X
+            <input type="number" name="change_coord_seat_x" value=0 id="change_coord_seat_x">
+      </p>
+<p> Смещение по Y
+            <input type="number" name="change_coord_seat_y" value=0 id="change_coord_seat_y">
+      </p>
+ <p>
+            Ценовая категория
+            <select name="change_coord_seat_type_id" id="change_coord_seat_type_id">               
+            </select>
+        </p>
+       <p> 
+          <button class="button" id="change_coord_seat_btn">Обновить</button>
+      </p>
+    </div>
+
+
+    <div class="tool_tab" id="upd_tab">
+
+        <p>
+            Номер ряда
+            <input type="number" min="0" name="upd_seat_row" id="upd_seat_row">
+        </p>
+        <p>
+            Номер места
+            <input type="number" min="0" name="upd_seat_number" id="upd_seat_number">
+        </p>
+
+        <p>
+            Ценовая категория
+            <select name="upd_seat_type_id" id="upd_seat_type_id">
+                <!-- <option value="1" selected>Тест 1</option>
+                                <option value="1">Тест 2</option>                     -->
+            </select>
+        </p>
+        <p>
+            <!-- <input type="checkbox" name="upd_seat_booked" id="upd_seat_booked"><label for="upd_seat_booked">Место недоступно</label></p> -->
+            <p>
+                <button class="button" id="upd_seat_save_btn">Обновить</button>
+            </p>
+    </div>
+
+
+
+
+
+    <div class="tool_tab" id="preloader_tab">
+        <div class="preloader_wrapper">
+            <div class="cssload-loader"></div>
+        </div>
+    </div>
+
+
+</div>
+<ul id="seat_prices_filter">
+    <li id="reset_price_filter">
+        <i class="fa fa-times"></i>
+    </li>
+</ul>
+
+<div class="mmain">
+    <div id="fixed_seat_info"> </div>
+    <div class="zoom_btn">
+        <i class="fa fa-plus fa-2x" id="plus_zoom_chart"></i>
+        <i class="fa fa-minus fa-2x" id="minus_zoom_chart"></i>
+    </div>
+
+    <div id="main_drag_countainer" class="dragdealer">
+        <div class="handle">
+            <div id="seating_charts_container">
+                <svg xmlns="http://www.w3.org/2000/svg" width=1200 height=600 id="seating_charts">
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool_menu_container wrap">
+        <div class="tool_menu_buttons">
+            <button id="addseatButton" class="button">Добавить место</button>
+            <button id="deleteseatButton" class="button" disabled>Удалить выбранное место</button>
+            <button id="updateseatButton" class="button" disabled>Изменить информацию об Одном месте</button>
+<button id="updateselectedseatsPositionsButton" class="button" disabled>Изменить информацию о Нескольких местах</button>
+            <button id="updateAllseatPositionButton" class="button button-primary">Сохранить все изменения</button>
+
+        </div>
+    </div>
+    <div class="wrap" id="errors_container">_</div>
+</div>

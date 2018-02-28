@@ -1,0 +1,76 @@
+<script type="text/javascript" src="http://u36179.s02.wh1.su/wp-content/themes/metro-magazine/js/prices_settings.js?ver=4.9.4"></script>
+<style>
+    #prices_table td {
+        width: 10em;
+        text-align: center;
+    }
+
+    input[type='number'] {
+        width: 100px;
+    }
+
+    input[type='color'] {
+        padding: 0;
+    }
+
+    #save_price_type_settings {
+        width: 100%;
+        margin-top: 1em;
+    }
+
+    #add_price_type {
+        margin-top: 1em;
+        width: 50%;
+        text-align: center;
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
+    }
+
+    .new_price_type_container {
+        display: none;
+        text-align: center;
+    }
+</style>
+
+
+<div class="tool_menu_container wrap card">
+
+    <table id="prices_table">
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Название (необяз)
+            </th>
+            <th>
+                Цена
+            </th>
+            <th>
+                Цвет
+            </th>
+            <th>
+                Управление
+            </th>
+        </tr>
+
+    </table>
+    <button class="button" id="add_price_type">Добавить</button>
+    <div class="new_price_type_container">
+        <p> Название (необязательно):
+            <input type="text" id="new_price_type_name">
+        </p>
+        <p> Цена:
+            <input type="number" min="0" id="new_price_type_value">
+        </p>
+        <p> Цвет:
+            <input type="color" id="new_price_type_color">
+        </p>
+        <p>
+            <button class="button" id="new_price_type_save">Сохранить</button>
+        </p>
+    </div>
+    <button class="button button-primary" id="save_price_type_settings">Сохранить изменения</button>
+
+</div>
