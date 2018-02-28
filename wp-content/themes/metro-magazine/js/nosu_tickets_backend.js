@@ -28,7 +28,6 @@ $j(document).ready(function () {
 
     var seat_prices_info_ul = $j('#seat_prices_filter');
 
-    var prices_temp_ids = [];
     var seats_selected = [];
     var seat_one_selected = null;
     var seat_prices = [];
@@ -163,7 +162,7 @@ $j(document).ready(function () {
     $j('.tool_menu_tabs').on("click", function (event) {
 
         $j(this).css("display", "none");
-    })
+    });
 
     $j(".tool_tab").on("click", function (event) {
         event.stopPropagation();
@@ -314,7 +313,7 @@ $j(document).ready(function () {
             $j(opt).attr("seat_color", seat_prices[i].color);
             $j("#change_coord_seat_type_id").append(opt);
         }
-
+         $j("#change_coord_seat_type_id").val("");
         ShowToolTab("#change_coord_tab");
 
     });
@@ -324,7 +323,6 @@ $j(document).ready(function () {
     });
 
     function changeSelectedSeatsInfo() {
-
 
         var newPriceTypeId = parseInt($j("#change_coord_seat_type_id").val());
 
@@ -988,14 +986,10 @@ $j(document).ready(function () {
         var startmsg = "Места под номерами <span>";
         var goodmessage = "";
         var badmessage = "";
-        var normalmessage = "";
         for (i = 0; i < data.length; i++) {
             switch (data[i].res) {
                 case -1:
                     badmessage += data[i].id + ", "
-                    break;
-                case 0:
-                    normalmessage += data[i].id + ", "
                     break;
                 case 1:
                     goodmessage += data[i].id + ", "
@@ -1005,10 +999,9 @@ $j(document).ready(function () {
 
         (goodmessage != "") ? goodmessage = startmsg + goodmessage + "</span> были обновлены <br>" : goodmessage;
         (badmessage != "") ? badmessage = startmsg + badmessage + "</span> не были обновлены изза непредвиденной ошибки <br>" : badmessage;
-        (normalmessage != "") ? normalmessage = startmsg + normalmessage + "</span> не нуждались в обновлении<br>" : normalmessage;
 
         var message = "Всего мест - " + data.length + " <br>";
-        message += goodmessage + badmessage + normalmessage;
+        message += goodmessage + badmessage;
 
         showMessage(message, false);
     }
@@ -1153,7 +1146,6 @@ $j(document).ready(function () {
             .attr("fill", "gray")
             .attr("font-size", "35px");
         text_elem.attr("x", parseInt(text_elem.attr("x")) - getCoords(text_elem._groups[0][0]).width / 2);
-
     }
 
     function random(min, max) {
