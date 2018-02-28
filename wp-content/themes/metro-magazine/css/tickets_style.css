@@ -11,7 +11,7 @@
     -o-border-image: linear-gradient(to right, tomato, gold, yellowgreen, olivedrab, skyblue, rebeccapurple) 1;
     border-image: -webkit-gradient(linear, left top, right top, from(tomato), color-stop(gold), color-stop(yellowgreen), color-stop(olivedrab), color-stop(skyblue), to(rebeccapurple)) 1;
     border-image: linear-gradient(to right, tomato, gold, yellowgreen, olivedrab, skyblue, rebeccapurple) 1;
-    width: 1200px !important;
+    width: 1240px !important;
 }
 
 #main_drag_countainer {
@@ -472,4 +472,15 @@ svg circle {
     100% {
         -moz-transform: rotate(360deg);
     }
+}
+
+
+text {
+    -webkit-user-select: none;
+    /* user-select -- это нестандартное свойство */
+
+    -moz-user-select: none;
+    /* поэтому нужны префиксы */
+
+    -ms-user-select: none;
 }

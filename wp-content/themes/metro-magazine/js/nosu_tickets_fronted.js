@@ -2,9 +2,7 @@ var canvasMask;
 $j = jQuery.noConflict();
 
 
-
-$j(document).ready(function() {
-
+$j(document).ready(function () {
 
 
     var seating_charts = $j('#seating_charts')[0];
@@ -15,29 +13,40 @@ $j(document).ready(function() {
 
     main_drag.width = main_drag.elem.width();
     main_drag.height = main_drag.elem.height();
+    var circle_raduis_min = 6;
+    var circle_raduis_max = 9;
+    var isdrag = false;
+    var iszoomed = false;
 
     var svg_chart = d3.select("#seating_charts");
     var svg_cont = $j("#seating_charts");
 
+    var svgCoor = getCoords(svg_cont[0]);
+
 
     var seat_prices_info_ul = $j('#seat_prices_filter');
+    var seat_prices = [];
 
-    var prices_temp_ids = [];
     var seats_order = [];
     var isdrag = false;
 
-    addPricesInfo();
-    addSeatsInfo();
+    var price_booked_type_id;
+
+    DrawGrid();
+
+    getPricesAjax();
+    getSeatsAjax();
+
 
     var seats = svg_chart.selectAll("circle");
-
 
 
     //  $j("#main_drag_countainer > .handle").css("transform", "scale(0.5) translate(-50%, -50%)");
     // $j("#main_drag_countainer > .handle").css("width", "101%");
     // $j("#main_drag_countainer > .handle").css("height", "101%");
 
-    $j(".mmain").on("click", function(e) {});
+    $j(".mmain").on("click", function (e) {
+    });
     var dragged = false;
 
 
@@ -53,16 +62,14 @@ $j(document).ready(function() {
 
     // };
 
-    $j('#plus_zoom_chart').on("click", function(e)
-    {
+    $j('#plus_zoom_chart').on("click", function (e) {
         $j("#main_drag_countainer > .handle").css("width", "202%");
         $j("#main_drag_countainer > .handle").css("height", "200%");
         svg_cont.css("transform", "scale(2) translate(25%, 25%)");
         enableDrag();
     });
 
-    $j('#minus_zoom_chart').on("click", function(e)
-    {
+    $j('#minus_zoom_chart').on("click", function (e) {
         $j("#main_drag_countainer > .handle").css("width", "100%");
         $j("#main_drag_countainer > .handle").css("height", "100%");
         svg_cont.css("transform", "");
@@ -72,25 +79,21 @@ $j(document).ready(function() {
     });
 
 
-    $j("#seat_prices_filter li").on("click", function() {
+    $j("#seat_prices_filter").on("click", "li", function () {
         var li = $j(this);
         var list = $j("#seat_prices_filter li");
 
 
-        if (li.attr('id') == "reset_price_filter")
-        {
+        if (li.attr('id') == "reset_price_filter") {
             hideDiffPrices();
             $j("#reset_price_filter").css("display", "none");
             return;
         }
 
         var curr_selected = true;
-        if (li.hasClass("li_selected") == true)
-        {
-            list.each(function(k, v)
-            {
-                if (k == 0)
-                {
+        if (li.hasClass("li_selected") == true) {
+            list.each(function (k, v) {
+                if (k == 0) {
                     return true;
                 }
                 if ($j(v).is(li)) {
@@ -98,18 +101,15 @@ $j(document).ready(function() {
 
                     return true;
                 }
-                if ($j(v).hasClass('li_selected') == false)
-                {
+                if ($j(v).hasClass('li_selected') == false) {
                     curr_selected = false;
                     return false;
                 }
             });
         }
-        if (curr_selected)
-        {
+        if (curr_selected) {
             $j("#reset_price_filter").css("display", "inline");
-        }
-        else {
+        } else {
             $j("#reset_price_filter").css("display", "none");
         }
         var type_id = li.attr("seat_type_id");
@@ -119,43 +119,17 @@ $j(document).ready(function() {
         li.toggleClass("li_selected");
     });
 
-    seats.on("click", function()
-    {
 
-        var seat = d3.select(this);
-
-        if (seat.attr("seat_isbooked") == "true")
-        {
-            return false;
-        }
-        if (seat.attr("seat_isselected") == "false")
-        {
-            seat = seatStyleSelected(seat);
-            addtoOrder(seat);
-        }
-        else {
-            seat = seatStyleDeselected(seat);
-            var seat_remove_id = parseInt(seat.attr("seat_id"));
-
-            removefromOrder(seat_remove_id);
-        }
-        logOrder();
-    });
-
-
-    svg_chart.on("mousedown", function() {
+    svg_chart.on("mousedown", function () {
         isdrag = true;
-        document.onmouseup = function() {
+        document.onmouseup = function () {
             isdrag = false;
         }
     });
 
 
-
-    seats.on("mouseenter", function()
-    {
-        if (isdrag == true)
-        {
+    seats.on("mouseenter", function () {
+        if (isdrag == true) {
             return;
         }
         var seat = d3.select(this);
@@ -178,35 +152,30 @@ $j(document).ready(function() {
     });
 
 
-    seats.on("mouseleave", function()
-    {
+    seats.on("mouseleave", function () {
         var seat = d3.select(this);
 
         showSeatInfo(0, 0, "", false);
         seat.attr("r", "10");
     });
 
-    $j("#fixed_seat_info").on("click", function() {
+    $j("#fixed_seat_info").on("click", function () {
         showSeatInfo(0, 0, "", false);
     });
 
 
-
-    $j("#seat_order_list").on("click", ".seat_order_remove_btn", function()
-    {
+    $j("#seat_order_list").on("click", ".seat_order_remove_btn", function () {
         var thisRemoveId = parseInt($j(this).attr("seat_removeid"));
 
         $j(this).parent().parent().remove();
 
         var seats = svg_chart.selectAll("circle");
         var seat_change_style;
-        seats.each(function(d, i)
-        {
+        seats.each(function (d, i) {
             var thisCir = d3.select(this);
             var cir_id = parseInt(thisCir.attr("seat_id"));
 
-            if (thisRemoveId === cir_id)
-            {
+            if (thisRemoveId === cir_id) {
                 seat_change_style = thisCir;
                 return false;
             }
@@ -219,39 +188,30 @@ $j(document).ready(function() {
     });
 
 
-
-
-
-    function showSeatInfo(left, top, html, k)
-    {
-        if (k)
-        {
+    function showSeatInfo(left, top, html, k) {
+        if (k) {
             $j("#fixed_seat_info").addClass("display_block");
-        }
-        else {
-            $j("#fixed_seat_info").removeClass("display_block");
+        } else {
+            //  $j("#fixed_seat_info").removeClass("display_block");
         }
 
-        $j("#fixed_seat_info").css("left", left);
-        $j("#fixed_seat_info").css("top", top);
+        $j("#fixed_seat_info").css("left", left - pageXOffset);
+        $j("#fixed_seat_info").css("top", top - pageYOffset);
         $j("#fixed_seat_info").html(html);
     }
 
 
-
-    function seatStyleSelected(seat)
-    {
+    function seatStyleSelected(seat) {
         seat
             .style("stroke", seat.attr("seat_color"))
-            .style("stroke-width", 10)
+            .style("stroke-width", circle_raduis_min)
             .style("fill", "white");
         seat.attr("seat_isselected", true);
         return seat;
     }
 
 
-    function seatStyleDeselected(seat)
-    {
+    function seatStyleDeselected(seat) {
         seat
             .style("stroke", "")
             .style("stroke-width", 1)
@@ -261,19 +221,15 @@ $j(document).ready(function() {
     }
 
 
-
-    function logOrder()
-    {
+    function logOrder() {
         console.log("order.lenght:", seats_order.length);
-        for (i = 0; i < seats_order.length; i++)
-        {
+        for (i = 0; i < seats_order.length; i++) {
             console.log(seats_order[i]);
         }
         console.log("-------------");
     }
 
-    function addtoOrder(seat)
-    {
+    function addtoOrder(seat) {
         var temp_seat_info = {
             seat_price: parseInt(seat.attr("seat_price")),
             seat_id: parseInt(seat.attr("seat_id")),
@@ -309,24 +265,19 @@ $j(document).ready(function() {
     }
 
 
-    function removefromOrder(id)
-    {
-        for (i = 0; i < seats_order.length; i++)
-        {
+    function removefromOrder(id) {
+        for (i = 0; i < seats_order.length; i++) {
             var thisId = parseInt(seats_order[i].seat_id);
-            if (id === thisId)
-            {
+            if (id === thisId) {
                 orderSummaryChange(-seats_order[i].seat_price);
                 seats_order.splice(i, 1);
                 break;
             }
         }
 
-        $j("#seat_order_list li").each(function()
-        {
+        $j("#seat_order_list li").each(function () {
             var thisId = parseInt($j(this).attr("seat_id"));
-            if (id === thisId)
-            {
+            if (id === thisId) {
                 $j(this).remove();
                 return false;
             }
@@ -334,20 +285,17 @@ $j(document).ready(function() {
     }
 
 
-    function orderSummaryChange(price)
-    {
+    function orderSummaryChange(price) {
         summary_order_elem = $j("#order_summary_price");
         summary_order_price = parseInt(summary_order_elem.html());
-        if (isNaN(summary_order_price) == false)
-        {
+        if (isNaN(summary_order_price) == false) {
             summary_order_price += price;
         }
         else {
             summary_order_price = price;
         }
         summary_order_elem.html(summary_order_price);
-        if (summary_order_price > 0)
-        {
+        if (summary_order_price > 0) {
             $j("#order_continue_btn").prop("disabled", "");
         }
         else {
@@ -355,8 +303,7 @@ $j(document).ready(function() {
         }
     }
 
-    function enableDrag()
-    {
+    function enableDrag() {
         canvasMask = new Dragdealer('main_drag_countainer', {
             x: 0,
             y: 0,
@@ -367,6 +314,7 @@ $j(document).ready(function() {
         });
         canvasMask.enable();
     }
+
 
     function getCoords(elem) {
         var box = elem.getBoundingClientRect();
@@ -385,32 +333,66 @@ $j(document).ready(function() {
     }
 
 
+    function getSeatsAjax() {
+        $j.ajax({
+            type: "GET",
 
-    function addPricesInfo()
-    {
-        var seat_prices = [];
+            url: my_ajax_url,
+            data: {
+                action: 'getSeats'
+            },
+            success: function (response) {
 
-        var price_info = {};
-        price_info.id = 1;
-        price_info.price = 510;
-        price_info.seat_type = 510;
-        price_info.color = "blue";
+                var data = JSON.parse(response);
+                addSeatsInfo(data);
 
-        seat_prices.push(price_info);
-
-
-        var price_info = {};
-        price_info.id = 2;
-        price_info.price = 110;
-        price_info.seat_type = 110;
-        price_info.color = "red";
-
-        seat_prices.push(price_info);
+            },
+            error: function (res) {
+                console.log("error : ", res);
+            }
+        });
+    }
 
 
+    function getPricesAjax() {
+        $j.ajax({
+            type: "GET",
 
-        for (i = 0; i < seat_prices.length; i++)
-        {
+            url: my_ajax_url,
+            data: {
+                action: 'getPrices'
+            },
+            success: function (response) {
+
+                console.log(response);
+                var data = JSON.parse(response);
+                addPricesInfo(data);
+
+            },
+            error: function (res) {
+                console.log("error : ", res);
+            }
+        });
+    }
+
+
+    function addPricesInfo(data) {
+        seat_prices = [];
+
+        for (var key in data) {
+            var price_info = {};
+            price_info.id = data[key].id;
+            price_info.price = data[key].price;
+            price_info.name = data[key].name || "";
+            price_info.color = data[key].color;
+            seat_prices.push(price_info);
+        }
+
+        for (i = 0; i < seat_prices.length; i++) {
+            if (seat_prices[i].name == "booked") {
+                price_booked_type_id = seat_prices[i].id;
+                continue;
+            }
             var li_price = document.createElement('li');
             li_price.setAttribute("seat_type_id", seat_prices[i].id);
             var html = "" + seat_prices[i].price + "₽";
@@ -421,280 +403,79 @@ $j(document).ready(function() {
         }
     }
 
-    function addSeatsInfo()
-    {
-        var seats = [];
-        var idd = 1;
 
-        for (i = 2; i < 12; i++)
-        {
-            for (j = 3; j < 15; j++)
-            {
-                var seat = {};
-                seat.seat_id = idd;
-                seat.seat_left = i * 25;
-                seat.seat_top = j * 25;
-                seat.seat_number = i;
-                seat.seat_row = j;
-                seat.isbooked = false;
-                seat.isselected = false;
-                var rn = random(1, 3);
-                if (rn == 1)
-                {
-                    seat.seat_type_id = 1;
-                    seat.seat_price = 510;
-                    seat.seat_color = "blue";
-                }
-                else if (rn == 2) {
-                    seat.seat_type_id = 2;
-                    seat.seat_price = 220;
-                    seat.seat_color = "red";
-                }
-                else {
-                    seat.isbooked = true;
-                    seat.seat_color = "gray";
-                }
+    function addSeatsInfo(data) {
+        var seats_array = [];
 
-                idd++;
-                seats.push(seat);
-            }
+        for (var key in data) {
+            var seat = {};
+
+            seat.seat_id = data[key].id;
+            seat.seat_type_id = data[key].type_id;
+            seat.seat_price = data[key].price;
+            seat.seat_color = data[key].color;
+            seat.seat_left = data[key].left;
+            seat.seat_top = data[key].top;
+            seat.seat_row = data[key].row;
+            seat.seat_number = data[key].number;
+            //   seat.seat_isbooked = data[key].booked;
+            seat.seat_isselected = false;
+            seats_array.push(seat);
         }
 
-
-        for (i = 13; i < 29; i++)
-        {
-            for (j = 3; j < 15; j++)
-            {
-                var seat = {};
-                seat.seat_id = idd;
-                seat.seat_left = i * 25;
-                seat.seat_top = j * 25;
-                seat.seat_number = i;
-                seat.seat_row = j;
-                seat.isbooked = false;
-                seat.isselected = false;
-                var rn = random(1, 3);
-                if (rn == 1)
-                {
-                    seat.seat_type_id = 1;
-                    seat.seat_price = 510;
-                    seat.seat_color = "blue";
-                }
-                else if (rn == 2) {
-                    seat.seat_type_id = 2;
-                    seat.seat_price = 220;
-                    seat.seat_color = "red";
-                }
-                else {
-                    seat.isbooked = true;
-                    seat.seat_color = "gray";
-                }
-
-                idd++;
-                seats.push(seat);
-            }
+        for (i = 0; i < seats_array.length; i++) {
+            createSeatfromObj(seats_array[i]);
         }
 
-        for (i = 30; i < 39; i++)
-        {
-            for (j = 3; j < 15; j++)
-            {
-                var seat = {};
-                seat.seat_id = idd;
-                seat.seat_left = i * 25;
-                seat.seat_top = j * 25;
-                seat.seat_number = i;
-                seat.seat_row = j;
-                seat.isbooked = false;
-                seat.isselected = false;
-                var rn = random(1, 3);
-                if (rn == 1)
-                {
-                    seat.seat_type_id = 1;
-                    seat.seat_price = 510;
-                    seat.seat_color = "blue";
-                }
-                else if (rn == 2) {
-                    seat.seat_type_id = 2;
-                    seat.seat_price = 220;
-                    seat.seat_color = "red";
-                }
-                else {
-                    seat.isbooked = true;
-                    seat.seat_color = "gray";
-                }
-
-                idd++;
-                seats.push(seat);
-            }
-        }
-
-
-        for (i = 2; i < 39; i++)
-        {
-            for (j = 16; j < 23; j++)
-            {
-                var seat = {};
-                seat.seat_id = idd;
-                seat.seat_left = i * 25;
-                seat.seat_top = j * 25;
-                seat.seat_number = i;
-                seat.seat_row = j;
-                seat.isbooked = false;
-                seat.isselected = false;
-                var rn = random(1, 3);
-                if (rn == 1)
-                {
-                    seat.seat_type_id = 1;
-                    seat.seat_price = 510;
-                    seat.seat_color = "blue";
-                }
-                else if (rn == 2) {
-                    seat.seat_type_id = 2;
-                    seat.seat_price = 220;
-                    seat.seat_color = "red";
-                }
-                else {
-                    seat.isbooked = true;
-                    seat.seat_color = "gray";
-                }
-
-                idd++;
-                seats.push(seat);
-            }
-        }
-
-
-        for (i = 2; i < 17; i++)
-        {
-            for (j = 1; j < 2; j++)
-            {
-                var seat = {};
-                seat.seat_id = idd;
-                seat.seat_left = i * 25;
-                seat.seat_top = j * 25;
-                seat.seat_number = i;
-                seat.seat_row = j;
-                seat.isbooked = false;
-                seat.isselected = false;
-                var rn = random(1, 3);
-                if (rn == 1)
-                {
-                    seat.seat_type_id = 1;
-                    seat.seat_price = 510;
-                    seat.seat_color = "blue";
-                }
-                else if (rn == 2) {
-                    seat.seat_type_id = 2;
-                    seat.seat_price = 220;
-                    seat.seat_color = "red";
-                }
-                else {
-                    seat.isbooked = true;
-                    seat.seat_color = "gray";
-                }
-
-                idd++;
-                seats.push(seat);
-            }
-        }
-
-
-        for (i = 25; i < 39; i++)
-        {
-            for (j = 1; j < 2; j++)
-            {
-                var seat = {};
-                seat.seat_id = idd;
-                seat.seat_left = i * 25;
-                seat.seat_top = j * 25;
-                seat.seat_number = i;
-                seat.seat_row = j;
-                seat.isbooked = false;
-                seat.isselected = false;
-                var rn = random(1, 3);
-                if (rn == 1)
-                {
-                    seat.seat_type_id = 1;
-                    seat.seat_price = 510;
-                    seat.seat_color = "blue";
-                }
-                else if (rn == 2) {
-                    seat.seat_type_id = 2;
-                    seat.seat_price = 220;
-                    seat.seat_color = "red";
-                }
-                else {
-                    seat.isbooked = true;
-                    seat.seat_color = "gray";
-                }
-
-                idd++;
-                seats.push(seat);
-            }
-        }
-
-
-        // var seat = {};
-        // seat.seat_id = 1;
-        // seat.seat_top = 200;
-        // seat.seat_left = 200;
-        // seat.seat_type_id = 1;
-        // seat.seat_price = 510;
-        // seat.seat_color = "blue";
-        // seat.seat_row = 2;
-        // seat.seat_number = 12;
-        // seat.isbooked = false;
-        // seat.isselected = false;
-
-        // seats.push(seat);
-
-        // var seat = {};
-        // seat.seat_id = 2;
-        // seat.seat_top = 300;
-        // seat.seat_left = 100;
-        // seat.seat_type_id = 2;
-        // seat.seat_price = 210;
-        // seat.seat_color = "red";
-        // seat.seat_row = 12;
-        // seat.seat_number = 312;
-        // seat.isbooked = false;
-        // seat.isselected = false;
-
-        // seats.push(seat);
-
-        for (i = 0; i < seats.length; i++)
-        {
-            svg_chart.append('circle')
-                .attr("seat_id", seats[i].seat_id)
-                .attr("seat_type_id", seats[i].seat_type_id)
-                .attr("seat_price", seats[i].seat_price)
-                .attr("cx", seats[i].seat_left)
-                .attr("cy", seats[i].seat_top)
-                .attr("seat_color", seats[i].seat_color)
-                .style("fill", seats[i].seat_color)
-                .attr("seat_isbooked", seats[i].isbooked)
-                .attr("seat_isselected", seats[i].isselected)
-                .attr("seat_row", seats[i].seat_row)
-                .attr("seat_number", seats[i].seat_number)
-                .attr("r", 5);
-        }
+        hideToolTabs();
     }
 
 
+    function createSeatfromObj(obj) {
+        svg_chart.append('circle')
+            .attr("seat_id", obj.seat_id)
+            .attr("seat_type_id", obj.seat_type_id)
+            .attr("seat_price", obj.seat_price)
+            .attr("cx", obj.seat_left)
+            .attr("cy", obj.seat_top)
+            .attr("seat_color", obj.seat_color)
+            .style("fill", obj.seat_color)
+            .attr("seat_isselected", obj.seat_isselected)
+            .attr("seat_row", obj.seat_row)
+            .attr("seat_number", obj.seat_number)
+            .attr("r", circle_raduis_min)
+            .on("mouseenter", function () {
+                seatmouseEnterHandler(d3.select(this), d3.event);
+            })
+            .on("mouseleave", function () {
+                showSeatInfo(0, 0, "", false);
+            })
+            .on("click", function () {
+                seatmouseClickHandler(d3.select(this));
+            });
+    }
 
-    function showDiffPrices(id)
-    {
+
+    function ShowToolTab(tabId) {
+        $j('.tool_menu_tabs .tool_tab').css("display", "none");
+        $j('.tool_menu_tabs').css('display', "block");
+        $j(tabId).css("display", "block");
+    }
+
+    function hideToolTabs() {
+        $j('.tool_menu_tabs').css('display', "none");
+        $j('.tool_menu_tabs .tool_tab').css("display", "none");
+    }
+
+
+    function showDiffPrices(id) {
         var seats = svg_chart.selectAll("circle");
-        seats.each(function(d, i)
-        {
+        seats.each(function (d, i) {
             var thisCir = d3.select(this);
             var cir_id = thisCir.attr("seat_type_id");
 
-            if (id == cir_id)
-            {
-                if (thisCir.style('opacity') == 0.6)
-                {
+            if (id == cir_id) {
+                if (thisCir.style('opacity') == 0.6) {
                     thisCir.style('opacity', 1);
                 }
                 else {
@@ -705,17 +486,96 @@ $j(document).ready(function() {
     }
 
 
-    function hideDiffPrices()
-    {
+    function seatmouseClickHandler(seat) {
+
+            if (seat.attr("seat_type_id")==price_booked_type_id)
+            {
+                return false;
+            }
+
+            if (seat.attr("seat_isselected") == "false") {
+
+                seat = seatStyleSelected(seat);
+                addtoOrder(seat);
+            }
+            else {
+
+                seat = seatStyleDeselected(seat);
+                var seat_remove_id = parseInt(seat.attr("seat_id"));
+                removefromOrder(seat_remove_id);
+            }
+    }
+
+    function seatmouseEnterHandler(seat, event) {
+        if (isdrag) {
+            return;
+        }
+
+        var e = event;
+        var seatCoor = getCoords(seat._groups[0][0]);
+
+        var html = "";
+        if (seat.attr("seat_type_id") == price_booked_type_id) {
+            html = "<p>Место недоступно</p>";
+        }
+        else {
+            html = "<p>" + seat.attr("seat_price") + "₽" + "</p>";
+        }
+
+        html += "<p>Ряд - " + seat.attr("seat_row") + ", Место - " + seat.attr("seat_number") + "</p>";
+
+        seat.style("cursor", "pointer");
+
+
+        showSeatInfo(seatCoor.left + seatCoor.width * 0.5, seatCoor.top - seatCoor.height * 0.5, html, true);
+    }
+
+    function hideDiffPrices() {
         $j("#seat_prices_filter li").removeClass("li_selected");
         var seats = svg_chart.selectAll("circle");
-        seats.each(function(d, i)
-        {
+        seats.each(function (d, i) {
             var thisCir = d3.select(this);
             var cir_id = thisCir.attr("seat_type_id");
             thisCir.style('opacity', 0.6);
 
         });
+    }
+
+
+    function DrawGrid() {
+        var seat = svg_chart.select("circle");
+
+        var cw = parseInt(svg_chart.attr("width"));
+        var ch = parseInt(svg_chart.attr("height"));
+        var cwCount = cw / circle_raduis_min;
+        var chCount = ch / circle_raduis_min;
+
+
+
+        start_x =cw * 0.1;
+        start_y = end_y = ch - ch * 0.05;
+        x1 = x2 = cw* 0.5;
+        x1 = cw * 0.4;
+        x2 = cw * 0.6;
+        y1 = y2 = start_y * 0.9;
+        end_x = cw * 0.9;
+
+        var path_value = "M " + start_x + ", " + start_y + " C " + x1 + ", " + y1 + " " + x2 + ", " + y2 + " " + end_x + ", " + end_y;
+
+
+        svg_chart.append("path")
+            .attr("d", path_value)
+            .attr("stroke", "gray")
+            .attr("stroke-width", 3)
+            .attr("fill", "none");
+
+        var text_elem = svg_chart.append("text")
+            .attr("x", cw / 2)
+            .attr("y", ch * 0.95)
+            .text("СЦЕНА")
+            .attr("fill", "gray")
+            .attr("font-size", "35px");
+        text_elem.attr("x", parseInt(text_elem.attr("x")) - 56);
     }
 
 
