@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41d0d05d-ebc1-4065-aca5-799a78cafecc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wp-content/themes/metro-magazine/css/tickets_style.css" afterPath="$PROJECT_DIR$/wp-content/themes/metro-magazine/css/tickets_style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_backend.js" afterPath="$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_backend.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_fronted.js" afterPath="$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_fronted.js" />
-    </list>
+    <list default="true" id="41d0d05d-ebc1-4065-aca5-799a78cafecc" name="Default" comment="" />
     <ignored path="nosu tickets.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -26,65 +21,7 @@
     <favorites_list name="Nosu" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="nosu_tickets_fronted.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_fronted.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="567" column="35" selection-start-line="567" selection-start-column="35" selection-end-line="567" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tickets_style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/css/tickets_style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="803">
-              <caret line="484" column="26" selection-start-line="484" selection-start-column="26" selection-end-line="484" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nosu_tickets_backend.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_backend.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="1003" column="44" selection-start-line="1003" selection-start-column="44" selection-end-line="1003" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="functions.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/functions.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="103" column="1" selection-start-line="103" selection-start-column="1" selection-end-line="103" selection-end-column="1" />
-              <folding>
-                <marker date="1519840731762" expanded="true" signature="3633:3663" placeholder="SELECT * FRO... hall_price_types" />
-                <marker date="1519840731762" expanded="true" signature="3823:3920" placeholder="SELECT * FRO... hall_price_types" />
-                <marker date="1519840731762" expanded="true" signature="4120:4192" placeholder="SELECT id FR... $" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="data.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wp-content/plugins/modal-window/include/class/data.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
-              <folding>
-                <marker date="1518107561000" expanded="true" signature="509:547" placeholder="SELECT * FRO... ${$tblname}" />
-                <marker date="1518107561000" expanded="true" signature="2148:2186" placeholder="SELECT * FRO... ${$tblname}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -141,7 +78,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -272,6 +208,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -330,22 +267,22 @@
       <workItem from="1519755753541" duration="781000" />
       <workItem from="1519769533560" duration="5866000" />
       <workItem from="1519840241158" duration="7188000" />
+      <workItem from="1523904126187" duration="97000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36383000" />
+    <option name="totallyTimeSpent" value="36480000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1734375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1734375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15151516" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -354,6 +291,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15151516" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -377,6 +315,53 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_fronted.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9639">
+          <caret line="567" column="35" selection-start-line="567" selection-start-column="35" selection-end-line="567" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/css/tickets_style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8228">
+          <caret line="484" column="26" selection-start-line="484" selection-start-column="26" selection-end-line="484" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_backend.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1649">
+          <caret line="103" column="1" selection-start-line="103" selection-start-column="1" selection-end-line="103" selection-end-column="1" />
+          <folding>
+            <marker date="1519840731762" expanded="true" signature="3633:3663" placeholder="SELECT * FRO... hall_price_types" />
+            <marker date="1519840731762" expanded="true" signature="3823:3920" placeholder="SELECT * FRO... hall_price_types" />
+            <marker date="1519840731762" expanded="true" signature="4120:4192" placeholder="SELECT id FR... $" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wp-content/plugins/modal-window/include/class/data.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
+          <folding>
+            <marker date="1518107561000" expanded="true" signature="509:547" placeholder="SELECT * FRO... ${$tblname}" />
+            <marker date="1518107561000" expanded="true" signature="2148:2186" placeholder="SELECT * FRO... ${$tblname}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_fronted.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11271">
@@ -501,26 +486,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wp-content/plugins/modal-window/include/class/data.php">
+    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_fronted.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
-          <folding>
-            <marker date="1518107561000" expanded="true" signature="509:547" placeholder="SELECT * FRO... ${$tblname}" />
-            <marker date="1518107561000" expanded="true" signature="2148:2186" placeholder="SELECT * FRO... ${$tblname}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="103" column="1" selection-start-line="103" selection-start-column="1" selection-end-line="103" selection-end-column="1" />
-          <folding>
-            <marker date="1519840731762" expanded="true" signature="3633:3663" placeholder="SELECT * FRO... hall_price_types" />
-            <marker date="1519840731762" expanded="true" signature="3823:3920" placeholder="SELECT * FRO... hall_price_types" />
-            <marker date="1519840731762" expanded="true" signature="4120:4192" placeholder="SELECT id FR... $" />
-          </folding>
+        <state relative-caret-position="4239">
+          <caret line="567" column="35" selection-start-line="567" selection-start-column="35" selection-end-line="567" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -532,19 +502,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_fronted.js">
+    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_backend.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="567" column="35" selection-start-line="567" selection-start-column="35" selection-end-line="567" selection-end-column="35" />
+        <state relative-caret-position="-1531">
+          <caret line="1003" column="44" selection-start-line="1003" selection-start-column="44" selection-end-line="1003" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/js/nosu_tickets_backend.js">
+    <entry file="file://$PROJECT_DIR$/wp-content/themes/metro-magazine/functions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="1003" column="44" selection-start-line="1003" selection-start-column="44" selection-end-line="1003" selection-end-column="44" />
-          <folding />
+        <state relative-caret-position="-4314">
+          <caret line="103" column="1" selection-start-line="103" selection-start-column="1" selection-end-line="103" selection-end-column="1" />
+          <folding>
+            <marker date="1519840731762" expanded="true" signature="3633:3663" placeholder="SELECT * FRO... hall_price_types" />
+            <marker date="1519840731762" expanded="true" signature="3823:3920" placeholder="SELECT * FRO... hall_price_types" />
+            <marker date="1519840731762" expanded="true" signature="4120:4192" placeholder="SELECT id FR... $" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wp-content/plugins/modal-window/include/class/data.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
+          <folding>
+            <marker date="1518107561000" expanded="true" signature="509:547" placeholder="SELECT * FRO... ${$tblname}" />
+            <marker date="1518107561000" expanded="true" signature="2148:2186" placeholder="SELECT * FRO... ${$tblname}" />
+          </folding>
         </state>
       </provider>
     </entry>
